@@ -1,4 +1,4 @@
-package de.okay9;
+package de.keo9ren;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
