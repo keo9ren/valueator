@@ -3,6 +3,7 @@ package de.keo9ren;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
@@ -35,10 +36,24 @@ public class TestEndpoint {
 	TestService ts;
 
 	@POST
-	@Path("balance")
-	public Response setBalance() {
+	@Path("balance/income/{income}")
+	public Response setIncome(@PathParam("income") BigDecimal income) {
+		Balance b = ts.setIncome(income);
+		return Response.status(201).entity(b).build();
+	}
+
+	@POST
+	@Path("balance/expenditure/{expenditure}")
+	public Response setExpenditure(@PathParam("expenditure") BigDecimal expenditure) {
 		Balance b = ts.setBalance();
 		return Response.status(201).entity(b).build();
+	}
+
+	@GET
+	@Path("balance")
+	public Response getBalance() {
+		List<Balance> b = ts.getBalance();
+		return Response.status(200).entity(b).build();
 	}
 
 	@GET
