@@ -8,7 +8,7 @@ import javax.ws.rs.core.Application;
  * JAX-RS resources in your application.
  *
  */
-@ApplicationPath("app")
+@ApplicationPath("")
 public class JAXRSConfiguration extends Application {
 
 }
