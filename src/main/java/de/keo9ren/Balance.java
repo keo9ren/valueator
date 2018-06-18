@@ -2,11 +2,14 @@ package de.keo9ren;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * The persistent class for the "Balance" database table.
@@ -28,6 +31,9 @@ public class Balance implements Serializable {
 	private BigDecimal income;
 
 	private BigDecimal expenditure;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date date;
 
 	public Balance() {
 	}
@@ -54,6 +60,14 @@ public class Balance implements Serializable {
 
 	public void setExpenditure(BigDecimal expenditure) {
 		this.expenditure = expenditure;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 }

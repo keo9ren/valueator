@@ -12,8 +12,8 @@ public class TestService {
 	@Inject
 	TestRepository tr;
 
-	public Balance setIncome(BigDecimal income) {
-		Balance b = tr.newIncome(income);
+	public Balance setIncome(BigDecimal income, BigDecimal ts) {
+		Balance b = tr.newIncome(income, ts);
 		return b;
 	}
 
@@ -21,6 +21,11 @@ public class TestService {
 		Balance b = tr.createBalance();
 
 		return b;
+	}
+
+	public List<Balance> getIncome() {
+		List<Balance> balance = tr.readIncome();
+		return balance;
 	}
 
 	public List<Balance> getBalance() {
