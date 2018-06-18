@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -52,37 +53,30 @@ public class TestEndpoint {
 				.addClass("incomelist")//
 				.addProperty("itemcount", 1);
 
-		bal.stream().map(b -> buildIncomeLinks(b)).forEach(eb::addEntity);
+		bal.stream().map(b -> buildIncomeLinks(b, uriInfo)).forEach(eb::addEntity);
 
 		return Response.ok().entity(eb.build()).build();
 	}
 
-	private JsonObject buildIncomeLinks(Balance b) {
-		return Siren.createEntityBuilder()//
-				.addSubEntityRel("income")// , UriInfo u
-				.addProperty("amount", b.getIncome())//
-				// .addProperty("date", b.getDate().toString())//
-				// .addLink()
-				.build();
+	private JsonObject buildIncomeLinks(Balance b, UriInfo u) {
+
+		EntityBuilder eb = Siren.createEntityBuilder()// Balance
+				.addSubEntityRel("item")// , UriInfo u
+				.addProperty("amount", b.getIncome());
+
+		Date date = b.getDate();
+		if (date != null) {
+			eb.addProperty("date", date.toString());
+		}
+
+		eb.addLink(createResourceUri(TestEndpoint.class, "getIncome", b.getId(), u));
+		return eb.build();
 	}
 
-	// @GET
-	// @Path("balance/income")
-	// public Response getIncomeList() {
-	// // TODO: Return list of all incomes
-	// List<Balance> i = ts.getIncome();
-	// // TODO: Add actions to update the income
-	// JsonArrayBuilder jar = Json.createArrayBuilder();
-	// i.forEach((item) -> {
-	// JsonObjectBuilder job = Json.createObjectBuilder().add("class", "income");
-	// job.add("properties", Json.createObjectBuilder().add("income",
-	// item.getIncome()).build());
-	// jar.add(job.build());
-	// });
-	// // TODO: Add action to delete single income
-	// return Response.ok().entity(jar.build()).build();
-	// }
-	//
+	private URI createResourceUri(Class<?> resourceClass, String method, String id, UriInfo uriInfo) {
+		return uriInfo.getBaseUriBuilder().path(resourceClass).path(resourceClass, method).build(id);
+	}
+
 	@POST
 	@Path("balance/income")
 	public Response setIncome(InputStream in) {
@@ -147,7 +141,7 @@ public class TestEndpoint {
 	}
 
 	@PUT
-	@Path("balance/income/{id}")
+	@Path("balance/incomeu/{id}")
 	public Response updateIncome(@PathParam("id") String id) {
 
 		// TODO: What code to return for put
